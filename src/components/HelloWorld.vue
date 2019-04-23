@@ -1,96 +1,36 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <input type="text" v-model="newMsg" />
+    <button @click="update">update</button>
+    <button @click="repeat">repeat</button>
   </div>
 </template>
 
 <script>
+import * as types from '@/store/mutation-types';
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Firebase&CircleCI Test'
+      // msg: 'Firebase&CircleCI Test'
+      newMsg: null,
     }
-  }
+  },
+  methods: {
+    update() {
+      this.$store.commit(types.UPDATE_MESSAGE, this.newMsg);
+    },
+    repeat() {
+      this.$store.dispatch('repeat')
+    },
+  },
+  computed: {
+    msg() {
+      return this.$store.state.msg;
+    },
+  },
 }
 </script>
 
