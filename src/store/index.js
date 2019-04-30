@@ -5,7 +5,7 @@ import * as types from './mutation-types';
 Vue.use(Vuex);
 
 const state = {
-  msg: 'Hello Vuex Store.',
+  msg: 'Vue App Demo',
 };
 
 const mutations = {
@@ -15,6 +15,9 @@ const mutations = {
 };
 
 const actions = {
+  update(context, msg) {
+    context.commit(types.UPDATE_MESSAGE, msg);
+  },
   repeat(context) {
     let msg = context.state.msg;
     context.commit(types.UPDATE_MESSAGE, `${msg} ${msg}`);

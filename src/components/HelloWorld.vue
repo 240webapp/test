@@ -1,23 +1,32 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <!-- <nishio></nishio> -->
     <input type="text" v-model="newMsg" />
-    <button @click="update">update</button>
-    <button @click="repeat">repeat</button>
+    <button @click="update">VuexMsgUpdate</button>
+    <!-- <button @click="repeat">repeat</button> -->
     <h2>{{ dbData.dbMsg }}</h2>
     <input type="text" v-model="insertMsg" />
-    <button class="saveMemosBtn" @click="saveTest">save@DB</button>
+    <button class="saveMemosBtn" @click="saveTest">DBMsgUpdate</button>
+    <signup v-if='!isSignUp'></signup>
+    <nishio v-if='isSignUp'></nishio>
   </div>
 </template>
 
 <script>
 import * as types from '@/store/mutation-types';
+import SignUp from '@/components/SignUp';
+import Nishio from '@/components/Nishio';
 
 export default {
   name: 'HelloWorld',
+  components: {
+    "signup": SignUp,
+    "nishio": Nishio
+  },
   data () {
     return {
-      // msg: 'Firebase&CircleCI Test'
+      isSignUp: false,
       newMsg: null,
       insertMsg: null,
       dbData: {
@@ -27,7 +36,7 @@ export default {
   },
   methods: {
     update() {
-      this.$store.commit(types.UPDATE_MESSAGE, this.newMsg);
+      this.$store.dispatch('update', this.newMsg)
     },
     repeat() {
       this.$store.dispatch('repeat')
@@ -47,12 +56,26 @@ export default {
             this.$set(this.dbData, 'dbMsg', snapshot.val());
           }
         });
-    }
+    },
   },
   computed: {
     msg() {
       return this.$store.state.msg;
     },
+  },
+  created () {
+    firebase.auth().onAuthStateChanged( user => {
+      if (user) {
+        // User is signed in.
+        console.log('is login.')
+        console.log('uid: '+user.uid)
+        this.isSignUp = true
+      } else {
+        // No user is signed in.
+        console.log('No user is signed in.')
+        this.isSignUp = false
+      }
+    })
   },
   mounted: function() {
     this.getFirebaseData()

@@ -1,7 +1,7 @@
 <template>
   <div id = 'nishio'>
-    <h1>240</h1>
-    <img src="../assets/nishio.jpg">
+    <h4>Hi.</h4>
+    <img class="nishio__img" src="../assets/nishio.jpg">
   </div>
 </template>
 
@@ -25,5 +25,9 @@ li {
 }
 a {
   color: #42b983;
+}
+img {
+  width: 200px;
+  height: auto;
 }
 </style>
