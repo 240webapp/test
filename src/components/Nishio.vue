@@ -2,12 +2,23 @@
   <div id = 'nishio'>
     <h4>Hi.</h4>
     <img class="nishio__img" src="../assets/nishio.jpg">
+    <button type="button" class="btn btn-default" @click="signOut">SignOut</button>
   </div>
 </template>
 
 <script>
+import { error } from 'util';
 export default {
-  name: 'Nishio'
+  name: 'Nishio',
+  methods: {
+    signOut () {
+      firebase.auth().signOut().then(()=>{
+        console.log("ログアウトしました");
+      }).catch( (error)=>{
+        console.log(`ログアウト時にエラーが発生しました (${error})`);
+      });
+    }
+  }
 }
 </script>
 
