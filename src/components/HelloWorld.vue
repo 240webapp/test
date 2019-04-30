@@ -4,6 +4,9 @@
     <input type="text" v-model="newMsg" />
     <button @click="update">update</button>
     <button @click="repeat">repeat</button>
+    <h2>{{ dbData.dbMsg }}</h2>
+    <input type="text" v-model="insertMsg" />
+    <button class="saveMemosBtn" @click="saveTest">save@DB</button>
   </div>
 </template>
 
@@ -16,6 +19,10 @@ export default {
     return {
       // msg: 'Firebase&CircleCI Test'
       newMsg: null,
+      insertMsg: null,
+      dbData: {
+        dbMsg: null
+      }
     }
   },
   methods: {
@@ -25,11 +32,30 @@ export default {
     repeat() {
       this.$store.dispatch('repeat')
     },
+    saveTest: function() {
+      firebase
+        .database()
+        .ref('mode')
+        .set(this.insertMsg);
+    },
+    getFirebaseData() {
+      firebase
+        .database()
+        .ref('mode')
+        .on('value', snapshot => {
+          if (snapshot.exists()) {
+            this.$set(this.dbData, 'dbMsg', snapshot.val());
+          }
+        });
+    }
   },
   computed: {
     msg() {
       return this.$store.state.msg;
     },
+  },
+  mounted: function() {
+    this.getFirebaseData()
   },
 }
 </script>
