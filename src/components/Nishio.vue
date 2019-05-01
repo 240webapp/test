@@ -23,6 +23,9 @@ export default {
 </script>
 
 <style scoped>
+div#nishio{
+  background: #ffdd80;
+}
 h1, h2 {
   font-weight: normal;
 }

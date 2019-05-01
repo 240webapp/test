@@ -1,13 +1,13 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <!-- <nishio></nishio> -->
     <input type="text" v-model="newMsg" />
     <button @click="update">VuexMsgUpdate</button>
     <!-- <button @click="repeat">repeat</button> -->
     <h2>{{ dbData.dbMsg }}</h2>
     <input type="text" v-model="insertMsg" />
     <button class="saveMemosBtn" @click="saveTest">DBMsgUpdate</button>
+    <p class='errMsg'>{{errMsg}}</p>
     <signup v-if='!isSignUp'></signup>
     <nishio v-if='isSignUp'></nishio>
   </div>
@@ -31,7 +31,8 @@ export default {
       insertMsg: null,
       dbData: {
         dbMsg: null
-      }
+      },
+      errMsg: null
     }
   },
   methods: {
@@ -45,7 +46,13 @@ export default {
       firebase
         .database()
         .ref('mode')
-        .set(this.insertMsg);
+        .set(this.insertMsg, (error) => {
+          if (error) {
+            this.errMsg = 'You can not update without signing in.'
+          } else {
+            this.errMsg = null
+          }
+        });
     },
     getFirebaseData() {
       firebase
@@ -85,6 +92,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+div.hello{
+  background: #e9f8f8;
+}
+p.errMsg{
+  color: red;
+}
 h1, h2 {
   font-weight: normal;
 }
